@@ -1,0 +1,126 @@
+--Phase-Parameters
+phase-id 1
+use-isotropic-plasticity FALSE
+use-crystal-plasticity TRUE
+use-glide TRUE
+use-climb TRUE
+use-diffusion TRUE
+use-porosity TRUE
+use-damage TRUE
+
+--Elasticity isotropic-shear-poisson-linear
+G-and-G_alpha 103572.0 -48.0 [MPa and MPa/K]
+nu-and-nu_alpha 0.3    0 [unitless and unitless/K]
+
+--Common-Material-Parameters
+atomic-volume[m^3] 8e-29
+gb-thickness[m] 5e-9
+grain-diameter[m] 100e-6
+cellwall-thickness[m] 1e-9
+mass-density[kg/m^3] 8000
+vacancy-diffusivity-coefficient[bulk,GB-[m^2/s]] 7.0e-7 7.0e-7
+vacancy-formation-energy[bulk,GB-[eV]] 1.5 1.5
+vacancy-migration-energy[bulk,GB-[eV]] 0.6 0.6
+pipe-diffusivity-coefficient[bulk,GB-[m^2/s]] 7.0e-7 7.0e-7
+pipe-diffusion-activation-energy[bulk,GB-[eV]] 0.6 0.6
+
+--Crystal-Parameters
+crystal-type BCC
+ratio-edge-screw 0.11 (psi angle for computing the climb vector is atan(ratio-edge-screw))
+n-slip-modes 2
+slip-modes BCC_{110}<111> BCC_{112}<111>
+read-hardening-matrix-from-file[TRUE/FALSE] FALSE
+self-hardening-coeff 0.7 0.7 [non-dimensional] ! one for each slip mode
+latent-hardening-coeff 0.05 0.05 [non-dimensional] ! one for each slip mode
+latent-hardening-other-modes 0.0 0.0 [non-dimensional] ! one for each slip mode
+burger-vector-length 2.48e-10  2.48e-10 [m] ! one for each slip mode
+n-dislocation-loop-type 2
+dislocation-loops BCCLoop_{100} BCCLoop_{111}
+
+--Integral-Formulation
+n-gauss  20
+n-standard-deviation-gaussian-integration 9. [real non-dimensional]
+
+--Glide-model wkkct-glide
+-microstructure-fingerprint-parameters
+number-of-precipitate-types[n_prec_type] 0
+number-of-solute-types[n_solute_type] 0
+dislocation-loops-number-density[1/m^2] 2.0e21 6.0e21 [1/m^3]
+dislocation-loops-size[m]  4e-9 6e-9 [m]
+initial-cell-interior-density[rho_ci]       4e12 4e12 [1/m^2]
+dislocation-cell-wall-present[TRUE/FALSE] TRUE
+initial-cell-wall-disl-density[rho_cw] 10e12 10e12 [1/m^2]
+standard-deviation-scaling-coeff[etav]   3.0e-11 [MPa*m]
+preaging-time[s] 1e5 1e5
+
+-glide-velocity-parameters
+p_exp 0.7 0.7 [non-dimensional]
+q_exp 1.4 1.4 [non-dimensional]
+n-exponent-damage[unitless] 5.
+K-hall-petch[1/sqrt(m)] 0.1
+crss-superposition-exponent[n_crss]                  2.0 2.0 [non-dimensional]
+thermal-activation-energy-dislocation[deltaG0_disl] 2.8 2.8 [eV]
+entropy-factor[chi_e] 0.1 0.1 [non-dimensional]
+
+-strength-parameter-tau0
+slip-mode-1
+tau0-n-values 7
+tau0-temperature[K] 293. 458. 548. 643. 733. 828. 923.1
+tau0-values[MPa]    130. 130. 100. 100. 100. 100.  100.
+slip-mode-2
+tau0-n-values 7
+tau0-temperature[K] 293. 458. 548. 643. 733. 828. 923.1
+tau0-values[MPa]    130. 130. 100. 100. 100. 100. 100.
+
+-dislocation-evolution-parameters
+coeff-disl-generation[k_disl_gen]             0.35e9  0.35e9 [non-dimensional]
+reference-strain-rate-dyn-recovery[edot0_dynrec] 1.0e7  1.0e7 [1/s]
+chi-dyn-recovery[chi_dynrec]               0.9 0.9 [non-dimensional][between0and1]
+D-dyn-recovery[D_dynrec]                   5000 5000 [MPa] slip-mode dependent
+g-dyn-recovery[g_dynrec]                   5.0e-2 5.0e-2 [non-dimensional] slip-mode dependent
+use-dislocation-static-recovery[TRUE/FALSE] TRUE
+k1-static-recovery[bulk,GB]       1.0 1.0	 [non-dimensional] slip-mode dependent
+k2-static-recovery[bulk,GB]       1.0 1.0	 [non-dimensional] slip-mode dependent
+coeff-trapping-rate-cell-wall[k_disl_trap]                5.e-8  5.e-8  [non-dimensional]
+coeff-annyhilation-cell-wall[k_cell_wall_ann]   100.15   100.15 [non-dimensional]
+
+-time-march-tolerances
+max-allowed-dd-percent-increment[unitless] 0.50
+max-allowed-tau-sol-drag-increment[MPa]  50.
+max-allowed-tau-eline-increment[MPa] 50.
+
+--Climb-model wkkct-climb
+-shared-parameters
+climb-reduced-ratio 1.0 [non-dimensional]
+dislocation-capture-efficiency-vacancy[zv0]  1.  [non-dimensional]
+n-exponent-damage[unitless] 5.
+
+--Diffusion-model coble-nabarro-diffusion
+diffusion-geometric-factor[bulk,GB-[unitless]] 4.0e6  4.0e6
+use-RuleOfMixture-Diffusion[TRUE/FALSE] TRUE
+
+--Porosity-model BTKTLC
+-pore-nucleation-parameters
+use-porosity-nucleation[TRUE/FALSE] TRUE
+use-preseeded-porosity[TRUE/FALSE] FALSE
+use-bulk-porosity-evolution[TRUE/FALSE] FALSE
+initial-porosity 1.
+pore-nucleation-standard-deviation[mm/mm] 0.010
+critical-pore-nucleation-strain[mm/mm] 0.0002
+max-nucleation-porosity-fraction[%] 3.
+
+-pore-growth-parameters
+use-plasticity-constrained-growth[TRUE/FALSE] TRUE
+use-diffusive-growth[TRUE/FALSE] FALSE
+pore-half-tip-angle[deg] 70.
+min-allowed-void-size[m] 1e-10
+grain-boundary-surface-tension[J/m2] 1.
+
+-void-coalescence-parameters
+use-coalescence[TRUE/FALSE] FALSE
+coalescence-critical-porosity[fc,unitless] 0.15
+saturation-porosity[fs,unitless] 0.99
+effective-porosity-at-fracture[fu,unitless] 0.99
+
+-time-march-tolerances
+porosity-absolute-and-relative-tol[volume-fraction,unitless] 1e-5 1e-5

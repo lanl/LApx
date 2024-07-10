@@ -1,0 +1,14 @@
+--Phase-Parameters
+phase-id 1
+use-isotropic-plasticity FALSE
+use-crystal-plasticity FALSE
+use-glide FALSE
+use-climb FALSE
+use-diffusion FALSE
+use-porosity FALSE
+use-damage FALSE
+
+--Elasticity cubic-linear
+C1111-and-C1111_alpha 1e5 0.1 [MPa and MPa/K]
+C1122-and-C1122_alpha 3e4 0.2 [MPa and MPa/K]
+C2323-and-C2323_alpha 5e4 0.3 [MPa and MPa/K]

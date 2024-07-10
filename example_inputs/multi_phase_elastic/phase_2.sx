@@ -1,0 +1,13 @@
+--Phase-Parameters
+phase-id 2
+use-isotropic-plasticity FALSE
+use-crystal-plasticity FALSE
+use-glide FALSE
+use-climb FALSE
+use-diffusion FALSE
+use-porosity FALSE
+use-damage FALSE
+
+--Elasticity isotropic-shear-poisson-linear
+G-and-G_alpha 1e4  0. [MPa and MPa/K]
+nu-and-nu_alpha 0.3    0. [unitless and unitless/K]

@@ -1,0 +1,89 @@
+# parsing conventions:
+# --[flag] [options]
+# flag order does not matter
+# conventional whitespace does not matter
+# comments can begin with either # or !
+
+# note : command line arguments supercede these settings
+--verbose
+
+--temperature 1023.0
+--t0-dt-dtmin-dtmax-dtmaxdamage 0. 0.1 1e-3 100. 0.5
+--time-simulation-end 1e6
+--nsteps 1000000
+--nramp 1 ! the number of timestep used to reach the given load
+--ramp-time 1.
+--max-material-iterations 40
+--material-stress-absolute-tolerance 1e-7
+--non-linear-strain-relative-tolerance 1e-5
+--non-linear-stress-relative-tolerance 1e-5
+--imposed-stressBC-absolute-tolerance 1e-5
+--max-nl-iterations 150
+
+# Choose numphases = 2 for Cu with phase 1 as dummy
+--numphases 1
+--phase 0 hutchinson_glide.sx
+
+--output_prefix test-
+--time_stamp
+# uncomment to enable
+!--multiple_file_input image
+
+# npts1 npts2 npts3 number of Fourier points (must be npts1*npts2*npts3)
+--dimensions 8 8 8 512
+--microstructure_file 8C_SingleCrystal_0_0_0.dat
+--direct_space_base
+1.  0.  0.
+0.  1.  0.
+0.  0.  1.
+
+--rve_dimensions 1. 1. 1.
+
+# iudot: flag for vel.grad. (0:unknown-1:known) DO NOT CHANGE
+--iudot_boundary_condition
+  1 1 1
+  1 0 1
+  1 1 0
+
+# vel.grad
+--udot_boundary_condition
+ 1e-2  0.       0.
+ 0.    5e-3     0.
+ 0.    0.       5e-3
+
+# DO NOT CHANGE
+--cauchy_flag
+  0 0 0
+    1 0
+      1
+--cauchy_stress
+   0.     0.      0.
+          0.      0.
+                  0.
+
+--eqincr 0.05 #7.5E-10
+# ictrl (1-6: strain comp, 0: VM eq, -1: tdot)
+--ictrl -1
+# INFORMATION ABOUT RUN CONDITIONS
+!--stepup
+
+--iVPFFT 0	# allow for VPFFT for Creep Simulations (1) or not (0)
+--IRATEFORM 1 # To run EVPFFT in the rate-form (1) or in the incremental form (0)
+--ithermo 0
+
+--irecover 0   # read grain states from STRESS.IN  (1) or not (0)?
+--isave 0      # write grain states in STRESS.OUT (1) or not (0)?
+--update-texture true    # update tex & RVE dim (1) or not (0)?
+--phase-hardening true
+--itimemarch 1  #1 if you want time marching, 2 if not
+--Maxtimestep 5000  #maximum number of time steps.
+
+# OUTPUT FLAGS
+# Not output if commented.
+# Negative : will output only after the last timestep.
+--write_fields_files_every               1  	#..timesteps
+--write_strs_strn_curve_every            -1   	#..timesteps
+--write_statistics_file_every            -1  	#..timesteps
+--write_tex_file_every                   1  	#..timesteps
+--write_stress_strain_vti_every          -1 	#..timesteps
+--write_stress_deriv_magn_vti_every      -1  	#..timesteps

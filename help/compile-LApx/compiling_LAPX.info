@@ -1,0 +1,223 @@
+INSTALL PROXY (ONLY FOR LANL COMPUTERS)
+at the end of your ~/.bashrc or ~/.zshrc add the following function to open and close the proxy
+you can copy paste:
+
+proxy-on () {
+  export HTTP_PROXY=http://proxyout.lanl.gov:8080
+  export http_proxy=$HTTP_PROXY
+  export HTTPS_PROXY=$HTTP_PROXY
+  export https_proxy=$HTTP_PROXY
+  export FTP_PROXY=$HTTP_PROXY
+  export ftp_proxy=$HTTP_PROXY
+  export ALL_PROXY=$HTTP_PROXY
+  export all_proxy=$HTTP_PROXY
+  export RSYNC_PROXY=$HTTP_PROXY
+  export rsync_proxy=$HTTP_PROXY
+  export NO_PROXY='localhost,127.0.0.1,lanl.gov'
+  export no_proxy=$NO_PROXY
+}
+
+proxy-off () {
+  unset -v HTTP_PROXY http_proxy
+  unset -v HTTPS_PROXY https_proxy
+  unset -v FTP_PROXY ftp_proxy
+  unset -v ALL_PROXY all_proxy
+  unset -v RSYNC_PROXY rsync_proxy
+}
+
+
+
+Install MINICONDA.
+If you have CONDA, you will need to start from a clean environment i.e. without any other package, at least for Mac
+If you find yourself needing to use SUDO something is WRONG)
+Navigate to https://docs.conda.io/en/latest/miniconda.html and download the proper bash file:
+  * APPLEM1  https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+  * Intel APPLE https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+
+First open the proxy, execute :
+  proxy-on
+From the terminal navigate to the directory where you downloaded the script and execute it,
+  if permission denied one executing the script, execute:
+  chmod u+x your_bash_script_file_name.sh
+Once installation is completed close all terminal windows and open a new terminal.
+At this point on the left side you should see something like: (base) lanl-moniker@machineid ~:
+
+REQUIRED PACKAGES
+GFORTRAN 11
+HDF5 14+
+FFTW 3.3.10
+OPENMPI 4+
+PYTHON 3
+
+
+PREFERRED OPTION
+create a conda environment using the provided cond-env-file.txt
+THIS WILL CREATE A NEW CONDA ENVIRONEMNT CALLED F2018 TAHT LAPX CAN USE
+on a shell execute:
+conda create --name f2018 --file cond-env-file.txt
+
+and then execute
+conda activate f2018
+
+also make sure python3 is avaaialble when executing python
+
+if this does not work most likely you need to find a specicific build from conda for hdf5 and fftw
+run conda search hdf5 and a select a proper hdf5 build: i.e. one whose name starts with mpi_openmpi_
+replace that specific build in the cond-env-file.txt
+do the same for fftw
+
+keep track of the directory where the envirnmente was installed
+
+
+PREPARING YOUR SHELL ENEVIRONMENT
+make sure you are using a bash or zsh shell bu running
+echo $SHELL
+
+LAPX assumes the existance of some envirnment variables in your system
+if you used the preferred add the follwoing line to your shell profile environment (~/.zshrc or ~/.bashprofile)
+
+export F2018_ENV_DIR=/the/path/to/the/f2108/conda/environemnt
+export FFTW_DIR=$F2018_ENV_DIR
+export PYTHON_NAME=python3
+export HDF5_DIR=$F2018_ENV_DIR
+
+export LD_LIBRARY_PATH=/lib:$F2018_ENV_DIR/lib:$FFTW_DIR/lib:$HDF5_DIR/lib:$LD_LIBRARY_PATH
+export LAPX_OPT=/path/to/lapx/dir/LApx/src/LApx-opt
+export LAPX_DBG=/path/to/lapx/dir/LApx/src/LApx-dbg
+
+
+source your shell profile file
+
+COMPILE LAPX
+
+navigate to the LApx source directory
+cd /path/to/lapx/dir/LApx/src/LApx-opt/src
+
+execute make to compile LApx in opt mode
+make 
+this will generate a file called LApx-opt that you can run by 
+mpirun -np 4 $LAPX_OPT
+
+execute make METHOD=dbg to compile LApx in opt mode
+make METHOD=dbg  
+this will generate a file called LApx-dbg that you can run by 
+mpirun -np 4 $LAPX_DBG
+
+
+RUNNIG LAPX EXAMPLES
+in the shell navigate to any example subfolder (e.g. example_inputs/glide_climb_diffusion)
+execute LApx
+mpirun -np 4 $LAPX_OPT
+
+
+
+
+---------ALTERANTE OPTION FOR REUIQRED PACKAGES
+PREPARE MINICONDA
+Execute the following steps
+* create a new environment named f2018:
+conda create --name f2018
+* activate the newly created environment:
+conda activate f2018
+* add proper channel
+  ** For Apple M1
+conda config --add channels conda-forge/osx-arm64
+** For Apple Intel
+conda config --add channels conda-forge/osx-64
+* set channel priority to strict
+conda config --set channel_priority strict
+
+
+
+INSTALL required packages in the miniconda environment
+conda activate f2018
+conda install -c conda-forge gfortran
+conda install -c conda-forge openmpi
+conda install python
+conda install lapack
+
+
+BASHRC or ZSHRC environment preparation
+* add the following block your ~/.bashrc or ~/.zshrc file just after CONDA initialization
+* make sure to verify the value for CONDA_DIR,
+* select a good directory for where to install you compiled libraries, MY_LIB_HOME
+* select FFTW_DIR and HDF5_DIR
+
+# CONDA_DIR is the directory where you installed miniconda
+export CONDA_DIR=$HOME/miniconda3
+# MY_LIB_HOME is the directory where you will install compiled libraries
+export MY_LIB_HOME=$HOME/compiled_libraries
+# this is where you will install FFTW libraries (must be within $MY_LIB_HOME)
+export FFTW_DIR=$MY_LIB_HOME/fftw
+# this is where you will install HDF5 libraries (must be within $MY_LIB_HOME)
+export HDF5_DIR=$MY_LIB_HOME/hdf5
+
+# all variables below depends on the environment variables you set before so you should just copy paste
+export CONDA_ENV_DIR=$CONDA_DIR/envs
+export F2018_ENV_DIR=$CONDA_ENV_DIR/$FORTRAN_ENV_NAME
+export PYTHON_NAME=python3
+export LAPX_DIR=path/to/lapx/directory 
+export LD_LIBRARY_PATH=$F2018_ENV_DIR/lib:$FFTW_DIR/lib:$HDF5_DIR/lib:$LD_LIBRARY_PATH
+export LAPX_OPT=$LAPX/src/LApx-opt
+export LAPX_DBG=$LAPX/src/src/LApx-dbg
+
+
+
+
+DOWNLOAD AND COMPILE FFTW
+* Go to the fftw website and download the latest fftw version (3.3.10)
+* Navigate to the directory where you downloaded the the fftw file and untar it:
+tar -xzvf fftw-3.3.10 (this will create a directory named fftw-3.3.10)
+* navigate inside the fftw directory:
+cd fftw-3.3.10
+* for apple M1 only, modify the config.sub file, execute:
+echo 'echo arm-apple-darwin' >config.sub
+* for apple M1 only, make sure the config.sub file is correct
+less config.sub (the content of the file should only b: "echo arm-apple-darwin")
+* configure the FFTW
+./configure --enable-shared --enable-mpi --prefix=$FFTW_DIR CC=mpicc FC=mpif90
+* make and install fftw
+make install
+* navigate back to your home directory
+cd $HOME
+
+
+
+DOWNLOAD AND COMPILE HDF5
+* Go to the hdf5 website and download the source code tar.gz file (hdf5-1.12.2.tar.gz) https://www.hdfgroup.org/downloads/hdf5/source-code/
+* Navigate to the directory where you downloaded the the hdf5 file and untar it:
+tar -xzvf hdf5-1.12.2.tar.gz (this will create a directory named hdf5-1.12.2.tar.gz)
+* navigate inside the hdf5 directory:
+cd hdf5-1.12.2
+* for apple M1 only, modify the config.sub file, execute:
+echo 'echo arm-apple-darwin' >bin/config.sub
+* for apple M1 only, make sure the config.sub file is correct
+less bin/config.sub (the content of the file should only b: "echo arm-apple-darwin")
+* configure the HDF5
+./configure --prefix=$HDF5_DIR --enable-fortran --enable-build-mode=production --enable-parallel --enable-shared=yes --enable-static=no FC=mpif90 CC=mpicc
+* make HDF5
+make
+* install HDF5
+make install
+* navigate back to your home directory
+cd $HOME
+
+
+DOWNLOAD AND COMPILE EVPFFT
+* activate the fortran 2018 conda environment
+conda activate f2018
+* navigate into the directory you want to download and install the evpfft code, then
+git clone https://gitlab.lanl.gov/arovinelli/merging-evpfft-versions.git
+* navigate to the evpfft source directory
+cd merging-evpfft-versions/src
+* make the evpfft code
+make
+
+
+RUN AN EVPFFT EXAMPLE CASE
+* activate the fortran 2018 conda environment
+conda activate f2018
+* navigate to any example_input directory subfolder
+cd merging-evpfft-versions/example_inputs/multi_phase
+* run the evpfft environment
+mpirun -n3  ../../src/LApx-opt

@@ -1,0 +1,10 @@
+--Phase-Parameters
+phase-id 1
+use-isotropic-plasticity FALSE
+use-crystal-plasticity FALSE
+use-glide FALSE
+use-climb FALSE
+use-diffusion FALSE
+use-porosity FALSE
+use-damage FALSE
+

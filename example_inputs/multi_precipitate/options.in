@@ -1,0 +1,57 @@
+--Boundary-Conditions
+-boundary-conditions-file-name BCfile.in
+
+--Microstructure-info
+-rve-physical-dimensions[Dx,Dy,Dz[m]] 1. 1. 1.
+-microstructure-file-name 8Cube10Grains.dat
+-microstructure-voxels[nx,ny,nz] 8 8 8
+-number-of-phases 1
+-phase-1-info
+gas-phase[0-no,1-yes] 0
+single-crystal-phase-file C35MN.sx
+
+--Simulation-options
+-initial-dt          0.01
+-dtmin               1e-10
+-dtmax               1000.
+-update-texture      TRUE
+-phase-hardening     TRUE
+
+--Numerical-options
+-max-inner-loop-iterations 100
+-material-stress-absolute-tolerance 1e-6
+-max-outer-loop-iterations 150
+-imposed-stressBC-absolute-tolerance  1e-6
+-non-linear-stress-relative-tolerance 1e-3
+-strain-rate-to-switch-from-realtive-to-absolute-tolerance[1/s,absolute-below-this-value] 1e-12
+-non-linear-strain-rate-relative-tolerance[1/s] 1e-3
+-non-linear-strain-rate-absolute-tolerance[1/s] 5e-15
+
+ --Time-March-Tolerances
+-max-allowed-total-strain-increment[mm/mm] 1e-3
+-max-allowed-stress-increment[MPa] 25
+
+--Creep-simulation-termination-options
+-use-increase-from-minimum-creep-rate-criterion[TRUE/FALSE] FALSE
+percent-increase-from-minimum-creep-rate[%] 2.
+check-after-time[s] 10.
+-use-minimum-allowed-creep-rate-criterion[TRUE/FALSE] FALSE
+minimum-allowed-creep-rate[1/s] 1e-20
+check-after-time[s] 10.
+-use-maximum-accumualted-plastic-strain-criterion[TRUE/FALSE] FALSE
+maximum-allowed-accumualted-plastic-strain[%] 5.
+
+--Output-Options
+-write-fields-every-n-steps 0
+-field-file-base-name test_field_file_name
+-write-detailed-log-to-screen[TRUE/FALSE] TRUE
+
+--Restart-Options
+-write-restart-files-every-n-steps 0
+-num-restart-file-to-keep 3
+-restart-file-base-name restart_file_test
+-is-this-a-restart[TRUE/FALSE] FALSE
+-restart-file-name fftinput_6cpus_new_read_write_routines_28.h5
+
+--Debug-Options
+--dump-not-converged-material-point-info-to-file FALSE

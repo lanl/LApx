@@ -1,0 +1,63 @@
+--Phase-Parameters
+phase-id 1
+use-isotropic-plasticity FALSE
+use-crystal-plasticity TRUE
+use-glide TRUE
+use-climb TRUE
+use-diffusion FALSE
+use-porosity FALSE
+use-damage FALSE
+
+--Elasticity cubic-linear
+C1111-and-C1111_alpha 1e5 0.1 [MPa and MPa/K]
+C1122-and-C1122_alpha 3e4 0.2 [MPa and MPa/K]
+C2323-and-C2323_alpha 5e4 0.3 [MPa and MPa/K]
+
+--Common-Material-Parameters
+atomic-volume[m^3] 8e-29
+gb-thickness[m] 1e-10
+grain-diameter[m] 10e-6
+mass-density[kg/m^3] 8000
+vacancy-diffusivity-coefficient[bulk,GB-[m^2/s]] 7.87e-7 1.48e-8
+vacancy-formation-energy[bulk,GB-[eV]] 1.7 1.2
+vacancy-migration-energy[bulk,GB-[eV]] 0.6 0.
+
+--Crystal-Parameters
+crystal-type BCC 
+ratio-edge-screw 0.11 (psi angle for computing the climb vector is atan(ratio-edge-screw))
+n-slip-modes 1
+slip-modes BCC_{110}<111> 
+self-hardening-coeff 0.7 [non-dimensional] ! one for each slip mode
+latent-hardening-coeff 0.05 [non-dimensional] ! one for each slip mode
+latent-hardening-other-modes 0.0 [non-dimensional] ! one for each slip mode
+burger-vector-length 2.48e-10 ! one for each slip mode
+
+--Integral-Formulation
+n-gauss  1
+n-standard-deviation-gaussian-integration 9. [real non-dimensional]
+
+--Glide-model hutchinson-glide
+gamma-dot-0[unitless] 1e-4
+n-exponent[unitless] 10.
+n-exponent-damage[unitless] 10.
+initial-critical-resolved-shear-stress[MPa] 15. 
+rss-std-deviation[MPa] 5.
+
+-hardening-parameters
+use-hardening[TRUE/FALSE] FALSE
+tau1_hardening[MPa] 10.
+theta0_hardening[MPa] 100.
+theta1_hardening[MPa] 10.
+
+-time-march-tolerances
+max-allowed-crss-increment[MPa] 0.05
+
+--Climb-model exponential-climb
+beta-dot-0[unitless] 5e-5
+n-exponent[unitless] 10. 
+n-exponent-damage[unitless] 10.
+initial-critical-resolved-shear-stress[MPa] 10.
+rss-std-deviation[MPa] 5.
+
+
+ 

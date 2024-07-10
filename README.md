@@ -29,11 +29,6 @@ Philosophical Magazine 90, no. 5 (2010): 567-583.
 "Mechanism-based modeling of thermal and irradiation creep behavior: An application to ferritic/martensitic HT9 steel." 
 International Journal of Plasticity 126 (2020): 102633.
 
-
-[3] Wen, Wei, A. Kohnert, M. Arul Kumar, Laurent Capolungo, and Carlos N. Tomé. 
-"Mechanism-based modeling of thermal and irradiation creep behavior: An application to ferritic/martensitic HT9 steel." 
-International Journal of Plasticity 126 (2020): 102633.
-
 [4] Wang, H., Laurent Capolungo, Bjorn Clausen, and C. N. Tomé. 
 "A crystal plasticity model based on transition state theory." 
 International Journal of Plasticity 93 (2017): 251-268.

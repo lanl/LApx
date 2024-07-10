@@ -1,0 +1,36 @@
+--Phase-Parameters
+phase-id 1
+use-isotropic-plasticity FALSE
+use-crystal-plasticity TRUE
+use-glide TRUE
+use-climb FALSE
+use-diffusion FALSE
+use-porosity FALSE
+use-damage FALSE
+
+--Elasticity isotropic-linear
+E-and-E_alpha 132600. 0 [MPa and MPa/K]
+nu-and-nu_alpha  0.3    0 [unitless and unitless/K]
+
+--Crystal-Parameters
+crystal-type FCC
+ratio-edge-screw 0.1111 (psi angle for computing the climb vector is atan(ratio-edge-screw))
+n-slip-modes 1
+slip-modes FCC_{111}<110>
+self-hardening-coeff 0.7 [non-dimensional] ! one for each slip mode
+latent-hardening-coeff 0.05 [non-dimensional] ! one for each slip mode
+latent-hardening-other-modes 0.0 [non-dimensional] ! one for each slip mode
+burger-vector-length 2.846e-10  [m] ! one for each slip mode
+
+--Integral-Formulation
+n-gauss  1
+n-standard-deviation-gaussian-integration 6. [real non-dimensional]
+
+--Glide-model hutchinson-glide
+gamma-dot-0[unitless] 1e-3
+n-exponent[unitless] 12.
+initial-critical-resolved-shear-stress[MPa] 30.
+rss-std-deviation[MPa] 8.
+
+
+ 

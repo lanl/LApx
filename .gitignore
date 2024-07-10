@@ -1,0 +1,23 @@
+# General
+.DS_Store
+*.git
+*.mod
+*.txt
+*.csv
+*.out
+*.vtk
+*.pyc
+*.smod
+*.mod
+LApx-dbg
+LApx-dbg.*
+LApx-opt
+evpfft
+*.zip
+*.swp
+*.output
+fort.*
+*.h5
+*.log
+*.xmf
+*.o

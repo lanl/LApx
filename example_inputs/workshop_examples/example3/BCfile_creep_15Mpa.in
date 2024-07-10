@@ -1,0 +1,46 @@
+--Boundary-Condition-File
+-new-simulation TRUE
+-finish-incomplete-simulation FALSE
+-start-from-preload FALSE
+
+--Initial-State
+-Time-Simulation-Begins[s] 0.
+-Initial-Temperature[K] 623.
+-Initial-Stress[MPa]
+0. 0. 0.
+   0. 0.
+      0.
+-Initial-Displacement-Gradient[unitless]
+0. 0. 0.
+0. 0. 0.
+0. 0. 0.
+
+--Number-of-BC-Blocks 1
+
+--Block 1
+-Block-Type rate-general
+-Block-ends-criterion time
+-Block-duration[s] 100.
+
+-Temperature-BC
+Imposed-Temperature-Rate[K/s] 0.
+
+-Stress-BC
+Imposed-Stress-Rate-Components
+0 0 0
+  1 0
+    1
+Imposed-Stress-Rate-Values[MPa/s]
+0. 0. 0.
+   0. 0.
+      0.
+
+-Displacement-BC
+Imposed-Velocity-Gradient-Components
+1 1 1
+1 0 1
+1 1 0
+Imposed-Velocity-Gradient-Values[1/s]
+1e-4 0. 0.
+ 0.  0. 0.
+ 0.  0. 0.
